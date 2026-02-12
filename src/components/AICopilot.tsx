@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
-import gsap from "gsap";
 import type { StartupInputs, TwinOutputs, ScenarioType } from "@/lib/engine";
 
 interface AICopilotProps {
@@ -125,21 +124,7 @@ export default function AICopilot({
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Pulse the toggle button periodically
-  useEffect(() => {
-    if (isOpen || !toggleRef.current) return;
-    const tl = gsap.timeline({ repeat: -1, repeatDelay: 4 });
-    tl.to(toggleRef.current, {
-      scale: 1.1,
-      duration: 0.3,
-      ease: "power2.out",
-    }).to(toggleRef.current, {
-      scale: 1,
-      duration: 0.3,
-      ease: "power2.in",
-    });
-    return () => { tl.kill(); };
-  }, [isOpen]);
+  // No GSAP on the toggle -- avoids conflicts with React mount/unmount
 
   const handleSend = (text: string) => {
     if (!text.trim() || isLoading) return;
@@ -153,28 +138,29 @@ export default function AICopilot({
 
   return (
     <>
-      {/* Toggle Button -- hidden when panel is open to avoid overlapping input */}
-      {!isOpen && (
-        <button
-          ref={toggleRef}
-          onClick={() => setIsOpen(true)}
-          className="fixed right-4 bottom-6 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-all duration-300 hover:text-accent hover:border-accent/30"
-          aria-label="Open AI Copilot"
-        >
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path
-              d="M10 2C5.58 2 2 5.08 2 8.88C2 11.21 3.38 13.27 5.5 14.41L4.5 18L8.29 15.69C8.85 15.78 9.42 15.82 10 15.82C14.42 15.82 18 12.74 18 8.94C18 5.08 14.42 2 10 2Z"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <circle cx="7" cy="9" r="1" fill="currentColor" />
-            <circle cx="10" cy="9" r="1" fill="currentColor" />
-            <circle cx="13" cy="9" r="1" fill="currentColor" />
-          </svg>
-        </button>
-      )}
+      {/* Toggle Button -- always rendered, hidden via CSS when panel is open */}
+      <button
+        ref={toggleRef}
+        onClick={() => setIsOpen(true)}
+        className={`fixed right-4 bottom-6 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-all duration-300 hover:text-accent hover:border-accent/30 ${
+          isOpen ? "pointer-events-none opacity-0 scale-75" : "opacity-100 scale-100"
+        }`}
+        aria-label="Open AI Copilot"
+        tabIndex={isOpen ? -1 : 0}
+      >
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path
+            d="M10 2C5.58 2 2 5.08 2 8.88C2 11.21 3.38 13.27 5.5 14.41L4.5 18L8.29 15.69C8.85 15.78 9.42 15.82 10 15.82C14.42 15.82 18 12.74 18 8.94C18 5.08 14.42 2 10 2Z"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <circle cx="7" cy="9" r="1" fill="currentColor" />
+          <circle cx="10" cy="9" r="1" fill="currentColor" />
+          <circle cx="13" cy="9" r="1" fill="currentColor" />
+        </svg>
+      </button>
 
       {/* Sidebar Panel */}
       <div

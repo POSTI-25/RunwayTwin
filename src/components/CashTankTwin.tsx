@@ -129,11 +129,6 @@ export default function CashTankTwin({ outputs, initialCash }: CashTankTwinProps
         Cash Fuel Tank
       </h3>
 
-      {/* Capacity label */}
-      <span className="text-[9px] font-mono text-muted-foreground -mt-2">
-        Cap: {formatCurrency(capacity)}
-      </span>
-
       {/* Tank */}
       <div
         ref={tankRef}
@@ -191,9 +186,6 @@ export default function CashTankTwin({ outputs, initialCash }: CashTankTwinProps
       <div className="flex flex-col items-center gap-1">
         <span className="font-mono text-lg font-bold text-foreground tabular-nums">
           {formatCurrency(outputs.current_cash_available)}
-        </span>
-        <span className="text-xs text-muted-foreground">
-          {Math.round(fillPercent)}% of capacity
         </span>
       </div>
     </div>
