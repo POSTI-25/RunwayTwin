@@ -1,26 +1,94 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Primary */
+  --primary: #0f172a;
+  --primary-light: #1e293b;
+  
+  /* Accents */
+  --accent: #ff6b35;
+  --accent-light: #ff8c5a;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --critical: #ef4444;
+  
+  /* Neutrals */
+  --background: #0f172a;
+  --surface: #1e293b;
+  --surface-light: #334155;
+  --foreground: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --border: #475569;
+  
+  /* Status */
+  --status-safe: #10b981;
+  --status-warning: #f59e0b;
+  --status-critical: #ef4444;
 }
 
 @theme inline {
+  --color-primary: var(--primary);
   --color-background: var(--background);
+  --color-surface: var(--surface);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  @apply border-gray-700;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Smooth animations */
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+  }
+  50% {
+    opacity: 0.8;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.8);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.slide-up {
+  animation: slide-up 0.5s ease-out;
+}
+
+.fade-in {
+  animation: fade-in 0.3s ease-in;
 }
