@@ -118,25 +118,7 @@ export default function AICopilot({
 
   const isLoading = status === "streaming" || status === "submitted";
 
-  // Animate panel open/close
-  useEffect(() => {
-    if (!panelRef.current) return;
-
-    if (isOpen) {
-      gsap.fromTo(
-        panelRef.current,
-        { x: "100%", opacity: 0 },
-        { x: "0%", opacity: 1, duration: 0.4, ease: "power3.out" }
-      );
-    } else {
-      gsap.to(panelRef.current, {
-        x: "100%",
-        opacity: 0,
-        duration: 0.3,
-        ease: "power3.in",
-      });
-    }
-  }, [isOpen]);
+  // No GSAP for open/close -- CSS transitions handle it reliably with React state
 
   // Scroll to bottom on new messages
   useEffect(() => {
@@ -197,10 +179,9 @@ export default function AICopilot({
       {/* Sidebar Panel */}
       <div
         ref={panelRef}
-        className={`fixed right-0 top-0 z-40 flex h-full w-full flex-col border-l border-border bg-card sm:w-[420px] ${
-          isOpen ? "" : "pointer-events-none"
+        className={`fixed right-0 top-0 z-40 flex h-full w-full flex-col border-l border-border bg-card sm:w-[420px] transition-transform duration-300 ease-in-out ${
+          isOpen ? "translate-x-0" : "translate-x-full pointer-events-none"
         }`}
-        style={{ transform: "translateX(100%)", opacity: 0 }}
       >
         {/* Header */}
         <div className="flex items-center justify-between border-b border-border px-4 py-3">
