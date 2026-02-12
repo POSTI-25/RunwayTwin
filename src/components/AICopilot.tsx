@@ -240,7 +240,7 @@ export default function AICopilot({
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-2">
             <button
               onClick={handleClearChat}
               className="rounded-md px-2 py-1 text-[10px] font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
@@ -250,14 +250,14 @@ export default function AICopilot({
             </button>
             <button
               onClick={() => setIsOpen(false)}
-              className="rounded-md p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              className="flex h-7 w-7 items-center justify-center rounded-lg border border-border bg-muted text-muted-foreground transition-colors hover:bg-critical/10 hover:text-critical hover:border-critical/30"
               aria-label="Close copilot"
             >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path
-                  d="M4 4L12 12M12 4L4 12"
+                  d="M3 3L11 11M11 3L3 11"
                   stroke="currentColor"
-                  strokeWidth="1.5"
+                  strokeWidth="2"
                   strokeLinecap="round"
                 />
               </svg>
