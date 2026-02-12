@@ -54,13 +54,16 @@ body {
 
 /* Glow utilities */
 .glow-accent {
-  box-shadow: 0 0 20px rgba(6, 214, 160, 0.15), 0 0 60px rgba(6, 214, 160, 0.05);
+  /* Neutralized: removed glow */
+  box-shadow: none !important;
 }
 .glow-warning {
-  box-shadow: 0 0 20px rgba(245, 158, 11, 0.15), 0 0 60px rgba(245, 158, 11, 0.05);
+  /* Neutralized: removed glow */
+  box-shadow: none !important;
 }
 .glow-critical {
-  box-shadow: 0 0 20px rgba(239, 68, 68, 0.2), 0 0 60px rgba(239, 68, 68, 0.08);
+  /* Neutralized: removed glow */
+  box-shadow: none !important;
 }
 
 /* Pulse animation for critical state */
@@ -75,4 +78,27 @@ body {
 /* Number rolling transition */
 .tabular-nums {
   font-variant-numeric: tabular-nums;
+}
+
+/* Disable focus rings and glows globally */
+:where(*:focus, *:focus-visible) {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Neutralize common Tailwind shadow utilities used across the app */
+.shadow, .shadow-sm, .shadow-md, .shadow-lg, .shadow-xl {
+  box-shadow: none !important;
+}
+
+/* Remove any slider thumb shadows */
+input[type="range"]::-webkit-slider-thumb,
+input[type="range"]::-moz-range-thumb {
+  box-shadow: none !important;
+}
+
+/* Ensure standard form controls don't show focus glow */
+input:focus, button:focus, textarea:focus, select:focus {
+  outline: none !important;
+  box-shadow: none !important;
 }

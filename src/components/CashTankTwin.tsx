@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import gsap from "gsap";
 import { type TwinOutputs, formatCurrency, getStatusLevel } from "@/lib/engine";
 import { useAnimatedNumber } from "@/hooks/useAnimatedNumber";
@@ -10,11 +10,12 @@ interface CashTankTwinProps {
   initialCash: number;
 }
 
-// Reference ceiling for the tank -- represents "100% full"
-// Use the greater of 2x the initial cash or 2M so small values don't instantly fill the tank
-function getTankCapacity(initialCash: number): number {
+
+// Default tank capacity logic (used for initial slider value)
+function getDefaultTankCapacity(initialCash: number): number {
   return Math.max(initialCash * 1.5, 2_000_000);
 }
+
 
 export default function CashTankTwin({ outputs, initialCash }: CashTankTwinProps) {
   const tankRef = useRef<HTMLDivElement>(null);
@@ -22,10 +23,12 @@ export default function CashTankTwin({ outputs, initialCash }: CashTankTwinProps
   const bubbleContainerRef = useRef<HTMLDivElement>(null);
   const status = getStatusLevel(outputs.runway_months);
 
-  const capacity = getTankCapacity(initialCash);
+  // Slider state for max tank capacity
+  const [maxCapacity, setMaxCapacity] = useState(() => getDefaultTankCapacity(initialCash));
+
   const fillPercent = Math.max(
     0,
-    Math.min(100, (outputs.current_cash_available / capacity) * 100)
+    Math.min(100, (outputs.current_cash_available / maxCapacity) * 100)
   );
 
   const animatedFill = useAnimatedNumber(fillPercent);
@@ -129,6 +132,23 @@ export default function CashTankTwin({ outputs, initialCash }: CashTankTwinProps
         Cash Fuel Tank
       </h3>
 
+      {/* Slider for max tank capacity */}
+      <div className="flex flex-col items-center w-full mb-2">
+        <label htmlFor="tank-capacity-slider" className="text-xs text-muted-foreground mb-1">
+          Max Tank Capacity: <span className="font-mono">{formatCurrency(maxCapacity)}</span>
+        </label>
+        <input
+          id="tank-capacity-slider"
+          type="range"
+          min={Math.max(100_000, initialCash)}
+          max={10_000_000}
+          step={10_000}
+          value={maxCapacity}
+          onChange={e => setMaxCapacity(Number(e.target.value))}
+          className="w-48 accent-accent"
+        />
+      </div>
+
       {/* Tank */}
       <div
         ref={tankRef}
@@ -155,7 +175,7 @@ export default function CashTankTwin({ outputs, initialCash }: CashTankTwinProps
         {/* Liquid */}
         <div
           ref={liquidRef}
-          className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t ${liquidColor} transition-colors duration-500`}
+          className={`absolute bottom-0 left-0 right-0 bg-linear-to-t ${liquidColor} transition-colors duration-500`}
           style={{ height: `${fillPercent}%` }}
         >
           {/* Wave effect -- only show when there's visible liquid */}

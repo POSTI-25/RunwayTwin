@@ -162,7 +162,22 @@ export default function AICopilot({
         </svg>
       </button>
 
-      {/* Sidebar Panel */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-30"
+          style={{ pointerEvents: 'none' }}
+        >
+          {/* Only the edge is clickable and glows on hover */}
+          <div
+            className="absolute right-[410px] top-0 h-full w-3 cursor-pointer group/edge"
+            style={{ pointerEvents: 'auto' }}
+            onClick={() => setIsOpen(false)}
+            aria-label="Close sidebar overlay"
+          >
+            <div className="h-full w-full transition-all duration-300" />
+          </div>
+        </div>
+      )}
       <div
         ref={panelRef}
         className={`fixed right-0 top-0 z-40 flex h-full w-full flex-col border-l border-border bg-card sm:w-[420px] transition-transform duration-300 ease-in-out ${

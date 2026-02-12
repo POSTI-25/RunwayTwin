@@ -19,7 +19,7 @@ export function useAnimatedNumber(target: number, duration = 0.8): number {
 
       const elapsed = (timestamp - startTimeRef.current) / 1000;
       const progress = Math.min(elapsed / duration, 1);
-      // ease out cubic
+
       const eased = 1 - Math.pow(1 - progress, 3);
       const value = startRef.current + (target - startRef.current) * eased;
 
@@ -37,7 +37,7 @@ export function useAnimatedNumber(target: number, duration = 0.8): number {
         cancelAnimationFrame(rafRef.current);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [target, duration]);
 
   return current;
