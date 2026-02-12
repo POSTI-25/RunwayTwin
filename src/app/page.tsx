@@ -11,6 +11,7 @@ import ScenarioForecast from "@/components/ScenarioForecast";
 import SurvivalOutcomes from "@/components/SurvivalOutcomes";
 import HealthMetrics from "@/components/HealthMetrics";
 import TwinInsights from "@/components/TwinInsights";
+import AICopilot from "@/components/AICopilot";
 
 export default function Home() {
   const [inputs, setInputs] = useState<StartupInputs>(DEFAULT_INPUTS);
@@ -167,6 +168,9 @@ export default function Home() {
           </div>
         </footer>
       </main>
+
+      {/* AI Copilot Sidebar */}
+      <AICopilot inputs={inputs} outputs={outputs} scenario={scenario} />
     </div>
   );
 }
